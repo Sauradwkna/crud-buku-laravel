@@ -12,7 +12,12 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        // mendapatkan semua data kategori dari model
+        $allKategori = Kategori::all();
+        // menampilkan data ke view
+        // folder kategori file index
+        // mengirimkan data menggunakan compact
+        return view('kategori.index', compact('allKategori'));
     }
 
     /**
@@ -20,7 +25,8 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        // menampikan form
+        return view('kategori.create');
     }
 
     /**
@@ -28,7 +34,17 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // proses saat submit data form
+        // buat validasi
+        $validatedData = $request->validate([
+            'nama_kategori' => 'required|max:100',
+        ]);
+
+        // simpan data
+        Kategori::create($validatedData);
+
+        // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -36,7 +52,8 @@ class KategoriController extends Controller
      */
     public function show(Kategori $kategori)
     {
-        //
+        // menampikan detail data kategori
+        return view('kategori.show', compact('kategori'));
     }
 
     /**
@@ -44,7 +61,8 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+        // menampikan form edit
+        return view('kategori.edit', compact('kategori'));
     }
 
     /**
@@ -52,7 +70,16 @@ class KategoriController extends Controller
      */
     public function update(Request $request, Kategori $kategori)
     {
-        //
+        // proses saat submit update data form
+        $validatedData = $request->validate([
+            'nama_kategori' => 'required|max:100',
+        ]);
+
+        // simpan update data
+        $kategori->update($validatedData);
+
+        // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -60,6 +87,9 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        // hapus data kategori
+        $kategori->delete();
+        // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 }

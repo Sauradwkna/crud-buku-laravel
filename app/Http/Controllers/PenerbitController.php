@@ -12,7 +12,12 @@ class PenerbitController extends Controller
      */
     public function index()
     {
-        //
+        // mendapatkan semua data penerbit dari model
+        $allPenerbit = Penerbit::all();
+        // menampilkan data ke view
+        // folder penerbit file index
+        // mengirim data menggunakan compact
+        return view('penerbit.index', compact('allPenerbit'));
     }
 
     /**
@@ -20,7 +25,8 @@ class PenerbitController extends Controller
      */
     public function create()
     {
-        //
+        // menampilkan form untuk membuat data baru
+        return view('penerbit.create');
     }
 
     /**
@@ -28,7 +34,17 @@ class PenerbitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // proses saat submit data form
+        // validasi
+        $validatedData = $request->validate([
+            'nama_penerbit' => 'required|max:100',
+        ]);
+
+        // simpan data
+        Penerbit::create($validatedData);
+
+        // redirect ke halaman index
+        return redirect()->route('penerbit.index');
     }
 
     /**
@@ -36,7 +52,8 @@ class PenerbitController extends Controller
      */
     public function show(Penerbit $penerbit)
     {
-        //
+        // menampilkan detail 
+        return view('penerbit.show', compact('penerbit'));
     }
 
     /**
@@ -44,7 +61,8 @@ class PenerbitController extends Controller
      */
     public function edit(Penerbit $penerbit)
     {
-        //
+        // menampilkan form untuk mengedit data
+        return view('penerbit.edit', compact('penerbit'));
     }
 
     /**
@@ -52,7 +70,16 @@ class PenerbitController extends Controller
      */
     public function update(Request $request, Penerbit $penerbit)
     {
-        //
+        // proses saat submit update data form
+        $validatedData = $request->validate([
+            'nama_penerbit' => 'required|max:100',
+        ]);
+
+        // simpan update data
+        $penerbit->update($validatedData);
+        
+        // redirect ke halaman index
+        return redirect()->route('penerbit.index');
     }
 
     /**
@@ -60,6 +87,9 @@ class PenerbitController extends Controller
      */
     public function destroy(Penerbit $penerbit)
     {
-        //
+        // proses saat hapus data
+        $penerbit->delete();
+        // redirect ke halaman index
+        return redirect()->route('penerbit.index');
     }
 }
